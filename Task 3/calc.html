@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculator</title>
+  <style>
+    body {
+      text-align: center;
+      margin-top: 40px;
+      font-family: Arial;
+    }
+
+    .calculator {
+      background-color: rgb(130, 128, 137);
+      display: inline-block;
+      border: 2px solid;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    input {
+      width: 160px;
+      height: 30px;
+      font-size: 18px;
+      text-align: right;
+      margin-bottom: 10px;
+      border: 1px solid;
+    }
+
+    .buttons {
+      justify-content: center;
+    }
+
+    .row {
+      padding-bottom: 5px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: rgb(218, 215, 214);
+      margin: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Calculator</h1>
+  <div class="calculator">
+    <input type="text" id="display">
+    <div class="buttons">
+      <div class="row">
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button onclick="pressOperator('/')">/</button>
+      </div>
+      <div class="row">
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button onclick="pressOperator('*')">*</button>
+      </div>
+      <div class="row">
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+        <button onclick="pressOperator('-')">-</button>
+      </div>
+      <div class="row">
+        <button onclick="press('0')">0</button>
+        <button onclick="press('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="pressOperator('+')">+</button>
+      </div>
+      <button onclick="clearDisplay()" style="width: 100%; margin-top: 10px;">C</button>
+    </div>
+  </div>
+
+  <script>
+    let display = document.getElementById('display');
+    let num1 = '';
+    let num2 = '';
+    let operator = '';
+    let resultShown = false;
+
+    function press(value) {
+      if (resultShown) {
+        clearDisplay();
+        resultShown = false;
+      }
+
+      if (operator === '') {
+        num1 += value;
+        display.value = num1;
+      } else {
+        num2 += value;
+        display.value = num1 + operator + num2;
+      }
+    }
+
+    function pressOperator(op) {
+      if (num1 === '') return;
+      if (operator !== '') return;
+      operator = op;
+      display.value = num1 + operator;
+    }
+
+    function calculate() {
+      let result = 0;
+      const n1 = parseFloat(num1);
+      const n2 = parseFloat(num2);
+
+      if (operator === '+') {
+        result = n1 + n2;
+      } else if (operator === '-') {
+        result = n1 - n2;
+      } else if (operator === '*') {
+        result = n1 * n2;
+      } else if (operator === '/') {
+        if (n2 === 0) {
+          display.value = 'Error';
+          return;
+        }
+        result = n1 / n2;
+      } else {
+        display.value = 'Invalid';
+        return;
+      }
+
+      display.value = result;
+      resultShown = true;
+      num1 = result;
+      num2 = '';
+      operator = '';
+    }
+
+    function clearDisplay() {
+      num1 = '';
+      num2 = '';
+      operator = '';
+      display.value = '';
+    }
+  </script>
+
+</body>
+</html>
